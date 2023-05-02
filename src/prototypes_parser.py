@@ -371,4 +371,7 @@ class PrototypesParser:
                     )
                 return '', False
 
+        if current_name in RESERVED_WORDS:
+            return '', False
+
         return current_name, True
