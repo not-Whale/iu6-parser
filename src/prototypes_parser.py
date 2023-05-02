@@ -165,10 +165,7 @@ class PrototypesParser:
         # print('<args_list>')
         tokens_list = []
 
-        if self.current_prototype_string[self.index] == SEMICOLON_TOKEN \
-                or self.index < len(self.current_prototype_string) - 1 \
-                and self.current_prototype_string[self.index] == RIGHT_PAREN_TOKEN \
-                and self.current_prototype_string[self.index + 1] == SEMICOLON_TOKEN:
+        if self.current_prototype_string[self.index] == RIGHT_PAREN_TOKEN:
             return tokens_list, True
 
         argument_tokens, ok = self.__parse_argument()
