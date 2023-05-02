@@ -1,0 +1,8 @@
+<prototype> ::= <type> <name> "(" <args_list> ")" ";"
+<type> ::= <sign> <integer_name> | <integer_name> | <not_integer_name>
+<sign> ::= 'unsigned' | 'signed'
+<integer_name> ::= 'int' | 'char' | 'short' | 'long' | 'longlong'
+<not_integer_name> ::= 'float' | 'double' | 'bool' | 'longdouble'
+<name> ::= [a-zA-Z][a-zA-Z0-9_]*
+<args_list> ::= <arg> | <arg> "," <args_list> | epsilon
+<arg> ::= <type> <name>
