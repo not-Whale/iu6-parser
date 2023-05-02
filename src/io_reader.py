@@ -8,7 +8,7 @@ class IOReader:
         return self.prototypes_list
 
     def __parse(self):
-        print('\033[33mЧтобы закончить ввод подайте на вход пустую строку!\033[0m')
+        print('\033[33mЧтобы закончить ввод подайте на вход "' + self.end_line + '"!\033[0m')
         while True:
             current_prototype = input('Объявление: ')
             if current_prototype == self.end_line:
