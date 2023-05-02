@@ -37,7 +37,7 @@ class PrototypesParser:
         # print('<prototype>')
         tokens_list = []
 
-        type_token, ok = self.__parse_type()
+        type_token, ok = self.__parse_return_type()
         if ok:
             tokens_list.extend(type_token)
         else:
@@ -102,6 +102,29 @@ class PrototypesParser:
             return [], False
 
         return tokens_list, True
+    
+    def __parse_return_type(self):
+        # print('<return_type>')
+        tokens_list = []
+
+        void_token, ok = self.__check_and_read_token(VOID_TOKEN)
+        if ok:
+            tokens_list.extend(void_token)
+            return tokens_list, True
+        
+        type_token, ok = self.__parse_type()
+        if ok:
+            tokens_list.extend(type_token)
+            return tokens_list, True
+        
+        if self.debug_mode:
+            print(
+                '\033[33mWarning: <type> or \'void\' expected in rule <return_type> in string "' +
+                self.current_prototype_string +
+                '"\033[0m'
+            )
+        return [], False
+
 
     def __parse_type(self):
         # print('<type>')
