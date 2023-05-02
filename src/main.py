@@ -8,7 +8,7 @@ if __name__ == '__main__':
     argument_parser = argparse.ArgumentParser(
         prog='C++ prototype parser',
         description='Parser, lexer and tokenizer of C++ function prototypes',
-        epilog='I love u iu6 bmstu!'
+        epilog='I love u, iu6 bmstu!'
     )
 
     argument_parser.add_argument(
