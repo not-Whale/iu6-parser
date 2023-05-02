@@ -161,9 +161,6 @@ class PrototypesParser:
                 )
             return [], False
 
-    def __parse_not_empty_arguments_list(self):
-        pass
-
     def __parse_arguments_list(self):
         # print('<args_list>')
         tokens_list = []
