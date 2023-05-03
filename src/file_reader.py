@@ -9,4 +9,4 @@ class FileReader:
 
     def __parse(self):
         with open(self.path_to_file) as input_file:
-            self.prototypes_list = input_file.readlines()
+            self.prototypes_list = list(map(lambda x: x.replace('\n', ''), input_file.readlines()))
