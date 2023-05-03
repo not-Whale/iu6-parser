@@ -280,15 +280,19 @@ class PrototypesParser:
         if ok:
             self.__eat_spaces()
 
-            second_long_token, second_ok = self.__check_and_read_token(LONG_TOKEN)
+            second_token, second_ok = self.__check_and_read_multiple_tokens([
+                INT_TOKEN,
+                LONG_TOKEN
+            ])
+
             if ok:
-                return [first_long_token, second_long_token], second_ok
+                return [first_long_token, second_token], second_ok
             else:
                 return first_long_token, ok
         else:
             if self.debug_mode:
                 print(
-                    '\033[33mWarning: "int" or "char" or "short" or "long" or "long long" '
+                    '\033[33mWarning: "int" or "char" or "short" or "long" or "long long" or "long int" '
                     'expected in rule <integer_name> in string "' +
                     self.current_prototype_string +
                     '"\033[0m'
