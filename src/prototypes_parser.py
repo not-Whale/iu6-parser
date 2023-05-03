@@ -28,10 +28,13 @@ class PrototypesParser:
                 print('\033[31mError in prototype "' + prototype_string + '" !\033[0m')
 
     def __eat_spaces(self):
+        if self.index >= len(self.current_prototype_string):
+            return
         current_token = self.current_prototype_string[self.index]
-        while current_token == SPACE_TOKEN:
+        while self.index < len(self.current_prototype_string) and current_token == SPACE_TOKEN:
             self.index += 1
-            current_token = self.current_prototype_string[self.index]
+            if self.index < len(self.current_prototype_string):
+                current_token = self.current_prototype_string[self.index]
 
     def __parse_prototype(self):
         # print('<prototype>')
@@ -53,7 +56,7 @@ class PrototypesParser:
 
         self.__eat_spaces()
 
-        if self.current_prototype_string[self.index] == LEFT_PAREN_TOKEN:
+        if self.index < len(self.current_prototype_string) and self.current_prototype_string[self.index] == LEFT_PAREN_TOKEN:
             tokens_list.append(LEFT_PAREN_TOKEN)
             self.index += 1
         else:
@@ -75,7 +78,7 @@ class PrototypesParser:
 
         self.__eat_spaces()
 
-        if self.current_prototype_string[self.index] == RIGHT_PAREN_TOKEN:
+        if self.index < len(self.current_prototype_string) and self.current_prototype_string[self.index] == RIGHT_PAREN_TOKEN:
             tokens_list.append(RIGHT_PAREN_TOKEN)
             self.index += 1
         else:
@@ -89,7 +92,7 @@ class PrototypesParser:
 
         self.__eat_spaces()
 
-        if self.current_prototype_string[self.index] == SEMICOLON_TOKEN:
+        if self.index < len(self.current_prototype_string) and self.current_prototype_string[self.index] == SEMICOLON_TOKEN:
             tokens_list.append(SEMICOLON_TOKEN)
             self.index += 1
         else:
@@ -102,7 +105,7 @@ class PrototypesParser:
             return [], False
 
         return tokens_list, True
-    
+
     def __parse_return_type(self):
         # print('<return_type>')
         tokens_list = []
@@ -111,12 +114,12 @@ class PrototypesParser:
         if ok:
             tokens_list.extend(void_token)
             return tokens_list, True
-        
+
         type_token, ok = self.__parse_type()
         if ok:
             tokens_list.extend(type_token)
             return tokens_list, True
-        
+
         if self.debug_mode:
             print(
                 '\033[33mWarning: <type> or \'void\' expected in rule <return_type> in string "' +
@@ -188,7 +191,7 @@ class PrototypesParser:
         # print('<args_list>')
         tokens_list = []
 
-        if self.current_prototype_string[self.index] == RIGHT_PAREN_TOKEN:
+        if self.index < len(self.current_prototype_string) and self.current_prototype_string[self.index] == RIGHT_PAREN_TOKEN:
             return tokens_list, True
 
         argument_tokens, ok = self.__parse_argument()
@@ -204,7 +207,7 @@ class PrototypesParser:
                 )
             return [], False
 
-        if self.current_prototype_string[self.index] == COMMA_TOKEN:
+        if self.index < len(self.current_prototype_string) and self.current_prototype_string[self.index] == COMMA_TOKEN:
             tokens_list.append(COMMA_TOKEN)
             self.index += 1
 
@@ -363,6 +366,9 @@ class PrototypesParser:
     def __find_and_get_name_token(self):
         current_name = ''
 
+        if self.index >= len(self.current_prototype_string):
+            return '', False
+
         current_char = self.current_prototype_string[self.index]
         if re.match(r"[a-zA-Z]", current_char):
             current_name += current_char
@@ -376,15 +382,20 @@ class PrototypesParser:
                 )
             return '', False
 
+        if self.index >= len(self.current_prototype_string):
+            return current_char, True
+
         current_char = self.current_prototype_string[self.index]
-        while current_char != SPACE_TOKEN \
+        while self.index < len(self.current_prototype_string) \
+                and current_char != SPACE_TOKEN \
                 and current_char != COMMA_TOKEN \
                 and current_char != LEFT_PAREN_TOKEN \
                 and current_char != RIGHT_PAREN_TOKEN:
             if re.match(r"[a-zA-Z0-9_]", current_char):
                 current_name += current_char
                 self.index += 1
-                current_char = self.current_prototype_string[self.index]
+                if self.index < len(self.current_prototype_string):
+                    current_char = self.current_prototype_string[self.index]
             else:
                 if self.debug_mode:
                     print(
